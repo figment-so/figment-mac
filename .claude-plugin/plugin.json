@@ -1,0 +1,22 @@
+{
+  "name": "figment-mac",
+  "version": "1.0.0",
+  "description": "Rent a Mac by the hour or day. An MCP server and a skill let AI agents order, use and stop it.",
+  "author": {
+    "name": "Figment",
+    "email": "support@figment.so",
+    "url": "https://figment.so"
+  },
+  "homepage": "https://figment.so/agents.md",
+  "repository": "https://github.com/figment-so/figment-mac",
+  "license": "MIT",
+  "keywords": [
+    "mac",
+    "macos",
+    "xcode",
+    "ios-simulator",
+    "cloud-mac",
+    "mcp",
+    "agents"
+  ]
+}

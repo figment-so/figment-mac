@@ -1,0 +1,8 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "figment-mac",
+  "version": "1.0.0",
+  "description": "Rent a Mac by the hour or day. An MCP server and a skill let AI agents order, use and stop it.",
+  "homepage": "https://figment.so/agents.md",
+  "license": "MIT"
+}

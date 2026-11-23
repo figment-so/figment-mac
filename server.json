@@ -1,0 +1,26 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "so.figment/mac",
+  "title": "Figment Mac hosting",
+  "description": "Rent a Mac by the hour or day. An MCP server and a skill let AI agents order, use and stop it.",
+  "version": "1.0.0",
+  "websiteUrl": "https://figment.so/agents.md",
+  "repository": {
+    "url": "https://github.com/figment-so/figment-mac",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://figment.so/api/mcp",
+      "headers": [
+        {
+          "name": "Authorization",
+          "description": "Optional. \"Bearer <api_key>\" with the key from the figment_create_account tool. Without it, pass api_key to each tool.",
+          "isRequired": false,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}
