@@ -3,8 +3,24 @@
   "name": "so.figment/mac",
   "title": "Figment Mac hosting",
   "description": "Rent a Mac by the hour or day. An MCP server and a skill let AI agents order, use and stop it.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "websiteUrl": "https://figment.so/agents.md",
+  "icons": [
+    {
+      "src": "https://figment.so/logo-256.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "256x256"
+      ]
+    },
+    {
+      "src": "https://figment.so/favicon.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "128x128"
+      ]
+    }
+  ],
   "repository": {
     "url": "https://github.com/figment-so/figment-mac",
     "source": "github"
