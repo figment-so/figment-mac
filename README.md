@@ -1,5 +1,7 @@
 # Figment Mac for AI agents
 
+[![mcptry](https://mcptry.com/badge/so.figment/mac)](https://mcptry.com/servers/so.figment/mac)
+
 Rent a Mac in the cloud from [Figment](https://figment.so) through an MCP server, an HTTP API or an
 agent skill. Use it when a task needs macOS and no Mac is available: an Xcode build, the iOS Simulator,
 Safari, a Mac app or AppleScript.
