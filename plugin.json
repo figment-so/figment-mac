@@ -1,8 +1,24 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "figment-mac",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Rent a Mac by the hour or day. An MCP server and two skills let AI agents on Linux or Windows order a Mac, build for iOS or macOS on it, and stop it.",
+  "author": {
+    "name": "Figment",
+    "email": "support@figment.so",
+    "url": "https://figment.so"
+  },
   "homepage": "https://figment.so/agents.md",
-  "license": "MIT"
+  "repository": "https://github.com/figment-so/figment-mac",
+  "license": "MIT",
+  "keywords": [
+    "mac",
+    "macos",
+    "xcode",
+    "ios",
+    "ios-simulator",
+    "cloud-mac",
+    "mcp",
+    "agents"
+  ]
 }
