@@ -10,7 +10,8 @@ not found", "requires macOS", "No such module 'UIKit'", or a request to build fo
   Apple sign-in by your user.
 - Steps: `figment_create_account` (keep the `api_key` secret), `figment_buy_credit` (your user pays the
   link), `figment_start_mac`, `figment_get_mac` until `ready`, `figment_get_mac_access`, then SSH.
-  Stop the Mac with `figment_stop_mac` when the task is done.
+- `figment_stop_mac` keeps the Mac and its files and stops billing; `figment_resume_mac` starts the same
+  Mac again. `figment_delete_mac` removes the Mac and its data at once.
 - The skills in `skills/figment-mac` and `skills/needs-macos` have the full steps. Guide:
   https://figment.so/agents.md
 - Never print the Mac password or the API key.

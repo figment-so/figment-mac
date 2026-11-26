@@ -19,8 +19,8 @@ OpenAPI description: https://figment.so/api/agent/v1/openapi.json
 Remote server, Streamable HTTP: `https://figment.so/api/mcp`
 
 Tools: `figment_get_offer`, `figment_create_account`, `figment_get_account`, `figment_buy_credit`,
-`figment_start_mac`, `figment_get_mac`, `figment_get_mac_access`, `figment_stop_mac`,
-`figment_send_feedback`.
+`figment_start_mac` (a new Mac), `figment_get_mac`, `figment_get_mac_access`, `figment_stop_mac`,
+`figment_resume_mac` (start a stopped Mac again), `figment_delete_mac`, `figment_send_feedback`.
 
 The first two tools and `figment_send_feedback` need no key. The others take the key from `figment_create_account`, as an
 `Authorization: Bearer <api_key>` header on the connection or as the `api_key` argument of the tool.

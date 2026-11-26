@@ -1,6 +1,6 @@
 ---
 name: figment-mac
-description: Rent a Mac in the cloud from Figment when a task needs macOS and no Mac is available - an Xcode build or archive, the iOS Simulator, Safari testing, a Mac app, or AppleScript. Covers prices, the agent account, the payment link for the user, ordering, access (SSH and browser console) and stopping the Mac. Use it when the user asks for a Mac, a macOS VM, a cloud Mac or a Mac for an agent, or when a command fails because it needs macOS.
+description: Rent a Mac in the cloud from Figment when a task needs macOS and no Mac is available - an Xcode build or archive, the iOS Simulator, Safari testing, a Mac app, or AppleScript. Covers prices, the agent account, the payment link for the user, ordering, access (SSH and browser console), and how to stop a Mac, start it again and delete it. Use it when the user asks for a Mac, a macOS VM, a cloud Mac or a Mac for an agent, or when a command fails because it needs macOS.
 license: MIT
 metadata:
   author: Figment
@@ -26,8 +26,9 @@ or a task is done. The founder reads each message.
 - Tell your user the plan, the price for an hour or a day, and that setup is not instant.
 - If the MCP server `https://figment.so/api/mcp` is connected, use its tools (`figment_get_offer`,
   `figment_create_account`, `figment_get_account`, `figment_buy_credit`, `figment_start_mac`,
-  `figment_get_mac`, `figment_get_mac_access`, `figment_stop_mac`, `figment_send_feedback`). If not, use
-  the HTTP API below.
+  `figment_get_mac`, `figment_get_mac_access`, `figment_stop_mac`, `figment_resume_mac`,
+  `figment_delete_mac`, `figment_send_feedback`). `figment_start_mac` orders a new Mac;
+  `figment_resume_mac` starts a stopped Mac again. If not, use the HTTP API below.
 
 ## Steps
 
@@ -65,9 +66,11 @@ API base: `https://figment.so/api/agent/v1`. Send JSON. After step 2, send
    public key to `~/.ssh/authorized_keys` on the Mac, then use the key. An `ssh_public_key` sent with
    the order is not installed on the Mac. The guide has commands that do not print the password
    ("Use SSH from an agent").
-8. **Stop.** `POST /macs/{id}/stop` when the task is done. Billing stops. Tell your user the cost from
-   `spent_cents`.
-9. **Feedback.** `POST /feedback` with `{"message":"<how the task went>"}`. One line helps.
+8. **Stop.** `POST /macs/{id}/stop` when you pause or the task is done. Billing stops. The Mac and
+   your work are kept for seven days. Tell your user the cost from `spent_cents`.
+9. **Continue or delete.** To continue, start the same Mac: `POST /macs/{id}/start`, then wait for
+   `ready` and read `/access` again. When the Mac is not needed again: `DELETE /macs/{id}`.
+10. **Feedback.** `POST /feedback` with `{"message":"<how the task went>"}`. One line helps.
 
 ## Rules
 
@@ -75,8 +78,14 @@ API base: `https://figment.so/api/agent/v1`. Send JSON. After step 2, send
 - An hourly Mac bills its first hour when it starts, then by the minute until you stop it, also when it
   is idle. A stop in the first hour costs one hour. Always stop it when the task is done, or tell your
   user that it is still running and what it costs.
-- A stopped Mac cannot be started again. Copy the files you need before you stop it. Data is kept for
-  seven days after a stop, then deleted.
+- Stop keeps your work. Delete removes it. A stopped Mac is kept for seven days from the stop, at no
+  charge, then deleted. Each stop starts a new seven days.
+- To continue work, start the stopped Mac again (`POST /macs/{id}/start`). Do not order a new Mac to
+  continue your work: a new Mac does not have your files. `can_start` and `start_before` on the Mac
+  say if and until when it can start.
+- A start is charged when the Mac runs again. Hourly: inside an hour that is paid it costs nothing
+  more; after it, a new first hour. Daily: inside the paid day it costs nothing; after it, a new day.
+- `DELETE /macs/{id}` deletes the Mac and its data at once. It cannot be undone.
 - If an order answers `402 credit_required`, buy credit and send the same order again with the same
   `Idempotency-Key`.
 - If an order answers `not_available_now`, tell your user. On `intel-vm`, send `allow_wait: true` only
