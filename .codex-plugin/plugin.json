@@ -1,0 +1,47 @@
+{
+  "name": "figment-mac",
+  "version": "1.1.0",
+  "description": "Rent a Mac by the hour or day. An MCP server and two skills let AI agents on Linux or Windows order a Mac, build for iOS or macOS on it, and stop it.",
+  "author": {
+    "name": "Figment",
+    "email": "support@figment.so",
+    "url": "https://figment.so"
+  },
+  "homepage": "https://figment.so/agents.md",
+  "repository": "https://github.com/figment-so/figment-mac",
+  "license": "MIT",
+  "keywords": [
+    "mac",
+    "macos",
+    "xcode",
+    "ios",
+    "ios-simulator",
+    "cloud-mac",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Figment Mac",
+    "shortDescription": "Rent a cloud Mac by the hour",
+    "longDescription": "When a task needs macOS and the agent runs on Linux or Windows, Figment Mac rents a Mac in US East by the hour or the day. The agent makes an account with one call, your user pays one Stripe link for prepaid credit, and the agent orders the Mac, connects over SSH, builds, brings the results back and stops the Mac. A new Apple Silicon Mac has Apple's Command Line Tools; Xcode needs a one-time Apple sign-in by your user.",
+    "developerName": "Figment",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://figment.so/mac-hosting",
+    "supportURL": "https://figment.so/agents.md",
+    "privacyPolicyURL": "https://figment.so/privacy",
+    "termsOfServiceURL": "https://figment.so/terms",
+    "defaultPrompt": [
+      "Build this project for iOS on a rented Mac"
+    ],
+    "brandColor": "#111111",
+    "composerIcon": "./logo.png",
+    "logo": "./logo.png",
+    "screenshots": []
+  }
+}

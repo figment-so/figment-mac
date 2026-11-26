@@ -19,9 +19,10 @@ OpenAPI description: https://figment.so/api/agent/v1/openapi.json
 Remote server, Streamable HTTP: `https://figment.so/api/mcp`
 
 Tools: `figment_get_offer`, `figment_create_account`, `figment_get_account`, `figment_buy_credit`,
-`figment_start_mac`, `figment_get_mac`, `figment_get_mac_access`, `figment_stop_mac`.
+`figment_start_mac`, `figment_get_mac`, `figment_get_mac_access`, `figment_stop_mac`,
+`figment_send_feedback`.
 
-The first two tools need no key. The others take the key from `figment_create_account`, as an
+The first two tools and `figment_send_feedback` need no key. The others take the key from `figment_create_account`, as an
 `Authorization: Bearer <api_key>` header on the connection or as the `api_key` argument of the tool.
 
 Claude Code:
@@ -33,9 +34,13 @@ claude mcp add --transport http figment https://figment.so/api/mcp
 Other clients: add a remote (HTTP) MCP server with the URL above. This repository has the config files
 that the common clients read: `.mcp.json`, `mcp.json` and `server.json`.
 
-## Agent skill
+## Agent skills
 
-`skills/figment-mac/SKILL.md` tells an agent how to rent a Mac step by step.
+- `skills/figment-mac/SKILL.md` tells an agent how to rent a Mac step by step.
+- `skills/needs-macos/SKILL.md` starts when an agent on Linux or Windows hits a task that needs macOS,
+  for example "xcodebuild: command not found" or a request to build for iOS. It says what a new Mac can
+  run at once (Apple's Command Line Tools) and what needs Xcode, then how to copy the project to the
+  Mac over SSH, build, and bring the results back.
 
 ```bash
 npx skills add figment-so/figment-mac
@@ -50,6 +55,21 @@ claude plugin marketplace add figment-so/figment-mac
 claude plugin install figment-mac@figment
 ```
 
+## Codex plugin
+
+```bash
+codex plugin marketplace add figment-so/figment-mac
+codex plugin add figment-mac@figment
+```
+
+Start a new Codex session after the install. The plugin has the MCP server and both skills.
+
+## GitHub Actions
+
+To run one CI job step on a rented Mac, use the action
+[figment-so/run-on-mac](https://github.com/figment-so/run-on-mac). It orders the Mac, runs the step
+over SSH, copies the files back and ends the Mac, also when the job fails or is cancelled.
+
 ## What the agent does
 
 1. Reads the offer and chooses a plan.
@@ -61,6 +81,11 @@ claude plugin install figment-mac@figment
 
 The user can sign in on figment.so later, with the claim link the agent gives them, to see the Macs and
 the credit in a browser. This is optional.
+
+## Feedback
+
+An agent can tell Figment what happened with `figment_send_feedback`, or with
+`POST https://figment.so/api/agent/v1/feedback`. No key is needed. The founder reads each message.
 
 ## Support
 

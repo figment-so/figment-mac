@@ -16,13 +16,18 @@ The full guide is `https://figment.so/agents.md`. Read it when you need a detail
 Live plans, prices and availability are at `https://figment.so/api/agent/v1/offer`. Always read prices
 from there. Do not quote a price from memory.
 
+Feedback: `POST https://figment.so/api/agent/v1/feedback` with `{"message":"..."}`. No key is needed.
+Send it when you are blocked, something that you need is missing, you hit a limit, a document is wrong,
+or a task is done. The founder reads each message.
+
 ## Before you start
 
 - Rent a Mac only when your user asked for one or agreed to it. Renting costs money.
 - Tell your user the plan, the price for an hour or a day, and that setup is not instant.
 - If the MCP server `https://figment.so/api/mcp` is connected, use its tools (`figment_get_offer`,
   `figment_create_account`, `figment_get_account`, `figment_buy_credit`, `figment_start_mac`,
-  `figment_get_mac`, `figment_get_mac_access`, `figment_stop_mac`). If not, use the HTTP API below.
+  `figment_get_mac`, `figment_get_mac_access`, `figment_stop_mac`, `figment_send_feedback`). If not, use
+  the HTTP API below.
 
 ## Steps
 
@@ -40,28 +45,47 @@ API base: `https://figment.so/api/agent/v1`. Send JSON. After step 2, send
 4. **Order.** `POST /macs` with
    `{"plan":"<plan id>","period":"hourly","accept_terms":true,"authorization":"user_authorized"}` and a
    new `Idempotency-Key`. Send `accept_terms` and `authorization` only if your user agreed to the terms
-   at `https://figment.so/terms` and allowed the rental. The plan `intel-vm` also needs
-   `"intel_compatibility_accepted":true`; read its notice in the offer to your user first.
+   at `https://figment.so/terms` and allowed the rental. An order also accepts Apple's macOS software
+   license agreement (`https://www.apple.com/legal/sla/`) for the account; tell your user.
+   - The plan `intel-vm` also needs `"intel_compatibility_accepted":true`; read its notice in the offer
+     to your user first.
+   - The plans `apple-silicon-vm` and `apple-silicon-vm-8gb` (more memory and storage) also need
+     `"allocation_accepted":true`, `"allocation_revision"`, `"power_policy_revision"` and
+     `"allocation_disclosure_version"`. Read the plan in the offer. Show its
+     `allocation_disclosure.text` to your user first. Then send `allocation_profile.revision`,
+     `allocation_profile.power_policy.revision` and `allocation_disclosure.version` of that plan in
+     these fields. Each plan has its own values.
 5. **Wait.** `GET /macs/{id}` at most once every 30 seconds until `state` is `ready`. Do not promise a
    start time. If the wait is long, tell your user and ask if they want to continue or stop.
-6. **Access.** `POST /macs/{id}/access` with `{"console":true,"login":true}`. You get the SSH host and
-   port, a one-time link to the Mac screen in a browser, and the Mac login when it is available.
-7. **Work.** Connect with SSH (`ssh -p <port> <username>@<host>`) or open the console link in a browser.
+6. **Access.** `POST /macs/{id}/access` with `{"console":true,"login":true}`. You get the SSH host,
+   port and user name, a one-time link to the Mac screen in a browser, and the Mac login when it is
+   available.
+7. **Work.** Connect with SSH (`ssh -p <port> <username>@<host>`) and the Mac password, or open the
+   console link in a browser. To sign in with a key, sign in one time with the password, add your
+   public key to `~/.ssh/authorized_keys` on the Mac, then use the key. An `ssh_public_key` sent with
+   the order is not installed on the Mac. The guide has commands that do not print the password
+   ("Use SSH from an agent").
 8. **Stop.** `POST /macs/{id}/stop` when the task is done. Billing stops. Tell your user the cost from
    `spent_cents`.
+9. **Feedback.** `POST /feedback` with `{"message":"<how the task went>"}`. One line helps.
 
 ## Rules
 
 - The Mac password and the API key are secrets. Do not print them in chat, logs or commits.
-- An hourly Mac bills by the minute from the order until you stop it, also when it is idle. Always stop
-  it when the task is done, or tell your user that it is still running and what it costs.
+- An hourly Mac bills its first hour when it starts, then by the minute until you stop it, also when it
+  is idle. A stop in the first hour costs one hour. Always stop it when the task is done, or tell your
+  user that it is still running and what it costs.
 - A stopped Mac cannot be started again. Copy the files you need before you stop it. Data is kept for
   seven days after a stop, then deleted.
 - If an order answers `402 credit_required`, buy credit and send the same order again with the same
   `Idempotency-Key`.
-- If an order answers `not_available_now`, tell your user. Send `allow_wait: true` only if they accept
-  a wait; an hourly Mac bills from the order.
+- If an order answers `not_available_now`, tell your user. On `intel-vm`, send `allow_wait: true` only
+  if they accept a wait; an hourly Mac bills from the order. `apple-silicon-vm` and
+  `apple-silicon-vm-8gb` take no waiting order; try again later.
 - Do not promise instant setup, an uptime figure or a refund of unused credit.
 - `GET /account` returns `claim.url`. Give it to your user if they want to see the Macs and the credit
   in a browser. It is optional.
+- If something stops your task or is missing, tell your user, and send `POST /feedback` with
+  `{"category":"blocked","message":"<what happened>"}`. It needs no key. An answer that can stop your
+  task has a `feedback_url`. Do not put a key or a password in the text.
 - Support: support@figment.so.

@@ -1,0 +1,20 @@
+{
+  "name": "figment",
+  "interface": {
+    "displayName": "Figment"
+  },
+  "plugins": [
+    {
+      "name": "figment-mac",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_USE"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

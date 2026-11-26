@@ -1,7 +1,7 @@
 {
   "name": "figment-mac",
-  "version": "1.0.0",
-  "description": "Rent a Mac by the hour or day. An MCP server and a skill let AI agents order, use and stop it.",
+  "version": "1.1.0",
+  "description": "Rent a Mac by the hour or day. An MCP server and two skills let AI agents on Linux or Windows order a Mac, build for iOS or macOS on it, and stop it.",
   "author": {
     "name": "Figment",
     "email": "support@figment.so",
@@ -14,6 +14,7 @@
     "mac",
     "macos",
     "xcode",
+    "ios",
     "ios-simulator",
     "cloud-mac",
     "mcp",
