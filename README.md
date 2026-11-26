@@ -64,6 +64,22 @@ codex plugin add figment-mac@figment
 
 Start a new Codex session after the install. The plugin has the MCP server and both skills.
 
+## Other agent tools
+
+| Tool | How to add Figment Mac |
+| --- | --- |
+| Gemini CLI | `gemini extensions install https://github.com/figment-so/figment-mac` (reads `gemini-extension.json`) |
+| VS Code, Copilot CLI | `code --add-mcp '{"name":"figment","type":"http","url":"https://figment.so/api/mcp"}'`, or add this repository as an agent plugin marketplace |
+| GitHub Copilot coding agent | Repository settings, Copilot, MCP servers: `{"mcpServers":{"figment":{"type":"http","url":"https://figment.so/api/mcp","headers":{"Authorization":"Bearer $COPILOT_MCP_FIGMENT_API_KEY"},"tools":["*"]}}}` with the key in the secret `COPILOT_MCP_FIGMENT_API_KEY` |
+| Augment (Auggie) | `auggie plugin marketplace add figment-so/figment-mac` |
+| Windsurf | `mcp_config.json`: `{"mcpServers":{"figment":{"serverUrl":"https://figment.so/api/mcp"}}}` |
+| Zed | Settings, AI, MCP Servers, Add Remote Server: `https://figment.so/api/mcp` |
+| OpenCode | `opencode.json`: `{"mcp":{"figment":{"type":"remote","url":"https://figment.so/api/mcp","oauth":false}}}` |
+| Factory (droid) | `droid mcp add figment https://figment.so/api/mcp --type http` |
+| Kiro | `.kiro/settings/mcp.json`: `{"mcpServers":{"figment":{"url":"https://figment.so/api/mcp"}}}` |
+| Warp, Cursor and other clients | They read `.mcp.json` or `mcp.json` from this repository, or take the URL above as a remote MCP server |
+| Perplexity, Mistral Le Chat, Grok | Add a custom connector with the URL `https://figment.so/api/mcp` and no authentication. Tools that need an account take `api_key` |
+
 ## GitHub Actions
 
 To run one CI job step on a rented Mac, use the action
